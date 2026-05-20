@@ -17,7 +17,9 @@
 ```bash
 cd /path/to/Equilibria
 
-# One-time: ensure models are tracked (needed for PPO on HF)
+# Model zips are on GitHub (commit 8b4e416+) but not pushed to HF git (binary rejection).
+# The HF Docker build downloads them via scripts/download_models.sh
+
 git add -A
 git status   # confirm no .env secrets
 

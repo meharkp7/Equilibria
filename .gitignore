@@ -59,7 +59,8 @@ htmlcov/
 tmp/
 temp/
 
-# Model/cache artifacts
+# Model/cache artifacts (checkpoints live on GitHub; HF Space downloads at build)
+models/
 .venv-deps/
 .cache/
 huggingface/

@@ -24,11 +24,13 @@ COPY requirements-deploy.txt requirements.txt ./
 RUN pip install --no-cache-dir -r requirements-deploy.txt \
     && pip install --no-cache-dir torch --index-url https://download.pytorch.org/whl/cpu
 
-# App source, trained models, and built UI
+# App source and built UI (models downloaded — not stored in HF git)
 COPY . .
 COPY --from=frontend-build /build/dist ./server/static
 
-RUN chmod -R 755 /app
+RUN chmod +x scripts/download_models.sh \
+    && ./scripts/download_models.sh \
+    && chmod -R 755 /app
 
 ENV CORS_ORIGINS="*"
 ENV PORT=7860
