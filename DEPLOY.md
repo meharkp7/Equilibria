@@ -47,13 +47,20 @@ huggingface-cli login
 # paste a Write token from https://huggingface.co/settings/tokens
 ```
 
-Push the same branch HF expects:
+Push to the Space (HF rejects git history that contains `.zip` binaries):
 
 ```bash
+# Option A — one-time clean history (already done if you followed this guide):
+git checkout --orphan hf-deploy-clean
+git add -A && git commit -m "Space deploy without binary history"
+git push hf hf-deploy-clean:main --force
+git checkout main
+
+# Option B — future updates after main has no model zips in new commits:
 git push hf main
 ```
 
-HF rebuilds the Docker Space automatically (5–15 min). Watch **Logs** on the Space page.
+HF rebuilds the Docker Space automatically (10–20 min first build). Watch **Logs** on the Space page.
 
 ---
 
