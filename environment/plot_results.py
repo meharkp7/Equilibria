@@ -14,7 +14,7 @@ Usage:
 from __future__ import annotations
 
 import sys, os, argparse
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..")))
 
 import numpy as np
 import matplotlib
@@ -23,7 +23,7 @@ import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
 from typing import Optional, List
 
-from environment.rl_wrapper import AttentionEnvWrapper, N_CONTENT
+from environment.rl_wrapper import AttentionEnvWrapper
 from environment.env_core import AttentionEconomyEnv
 from environment.models import Action
 from stable_baselines3 import PPO

@@ -1,0 +1,79 @@
+# Environment
+.env
+.env.local
+.env.*
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+
+# Virtual environments
+venv/
+.envrc
+.venv/
+ENV/
+
+# Build / packaging
+build/
+dist/
+*.egg-info/
+
+# Logs
+*.log
+logs/
+
+# Frontend build artifacts (built in Docker CI)
+frontend/dist/
+
+# Python cache anywhere
+**/__pycache__/
+*.py[cod]
+server/__pycache__/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDEs
+.vscode/
+.idea/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Pytest
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Mypy
+.mypy_cache/
+
+# Ruff
+.ruff_cache/
+
+# Temporary files
+tmp/
+temp/
+
+# Model/cache artifacts
+.venv-deps/
+.cache/
+huggingface/
+hf_cache/
+
+# Secrets
+secrets.json
+*.pem
+*.key
+
+# Generated benchmark outputs
+results/
+outputs/
+
+# Mac
+.AppleDouble
+.LSOverride

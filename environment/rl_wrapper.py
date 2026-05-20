@@ -138,7 +138,9 @@ class AttentionEnvWrapper(gym.Env):
         super().reset(seed=seed)
 
         task_id = (options or {}).get("task_id", self.task_id)
-        raw_obs = self._env.reset(task_id)
+        raw_obs = self._env.reset(task_id, seed=seed)
+        if self._max_steps_override is not None:
+            self._env.max_steps = self._max_steps_override
         self._last_obs = raw_obs
         self._allowed_set = set(self._env.allowed_content_ids)
 

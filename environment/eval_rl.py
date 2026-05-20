@@ -10,13 +10,13 @@ Usage:
 from __future__ import annotations
 
 import sys, os, argparse
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..")))
 
 import numpy as np
 from stable_baselines3 import PPO
 from typing import Optional
 
-from environment.rl_wrapper import AttentionEnvWrapper, ALL_CONTENT_IDS, N_CONTENT
+from environment.rl_wrapper import AttentionEnvWrapper, ALL_CONTENT_IDS
 from environment.env_core import AttentionEconomyEnv
 from environment.models import Action
 

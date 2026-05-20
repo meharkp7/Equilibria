@@ -3,7 +3,7 @@ demo.py — Runs all three tasks with a heuristic agent to verify correctness.
 """
 
 import sys, os
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..")))
 
 from environment.env_core import AttentionEconomyEnv
 from environment.models import Action

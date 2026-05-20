@@ -244,56 +244,11 @@ def _parse_llm_response(raw: str, obs: Dict[str, Any]) -> Dict[str, Any]:
 # ─────────────────────────────────────────────────────────
 
 def _smart_policy(obs: Dict[str, Any]) -> Dict[str, Any]:
-    try:
-        fatigue = _float(obs.get("visible_fatigue"))
-        trust   = _float(obs.get("visible_trust"), 1.0)
-        boredom = _float(obs.get("visible_boredom"))
+    from environment.heuristic_policy import smart_policy_action
 
-        if fatigue > 0.65:
-            return {"action_type": "pause_session",     "reasoning": "fallback: high fatigue"}
-        if trust < 0.35:
-            return {"action_type": "explore_new_topic", "reasoning": "fallback: trust recovery"}
-        if boredom > 0.45:
-            return {"action_type": "diversify_feed",    "reasoning": "fallback: high boredom"}
-
-        interest_dist = obs.get("interest_distribution") or {}
-        dominant = max(interest_dist, key=interest_dist.get) if interest_dist else "technology"
-        recent   = set(obs.get("recent_content_ids") or [])
-
-        best_id, best_score = None, -1.0
-        for item in (obs.get("available_content") or []):
-            try:
-                cid    = _f(item, "content_id", "")
-                manip  = _float(_f(item, "manipulation_score"))
-                addict = _float(_f(item, "addictiveness"))
-                rel    = _f(item, "topic_relevance") or {}
-                edu    = _float(_f(item, "educational_value"))
-
-                if cid in recent or manip > 0.40 or addict > 0.60:
-                    continue
-
-                score = 0.50 * _float(rel.get(dominant)) + 0.20 * edu - 0.20 * addict - 0.30 * manip
-                if score > best_score:
-                    best_score, best_id = score, cid
-            except Exception:
-                continue
-
-        if best_id:
-            return {"action_type": "recommend", "content_id": best_id, "reasoning": "fallback: heuristic"}
-
-        for item in (obs.get("available_content") or []):
-            try:
-                cid   = _f(item, "content_id", "")
-                manip = _float(_f(item, "manipulation_score"))
-                if cid and manip < 0.30:
-                    return {"action_type": "recommend", "content_id": cid, "reasoning": "fallback: last resort"}
-            except Exception:
-                continue
-
-    except Exception as e:
-        print(f"[ERROR] _smart_policy failed: {e}", file=sys.stderr)
-
-    return {"action_type": "explore_new_topic", "reasoning": "fallback: safe default"}
+    action = smart_policy_action(obs)
+    action["reasoning"] = f"fallback: {action.get('reasoning', 'heuristic')}"
+    return action
 
 # ─────────────────────────────────────────────────────────
 # ACTION STRING

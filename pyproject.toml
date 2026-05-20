@@ -20,3 +20,8 @@ server = "server.main:main"
 [tool.setuptools.packages.find]
 where = ["."]
 include = ["environment*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+addopts = "-q --cov=environment --cov-report=term-missing"

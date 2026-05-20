@@ -18,11 +18,10 @@ Usage:
 from __future__ import annotations
 
 import sys, os, argparse, time
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..")))
 
 import numpy as np
 from stable_baselines3 import PPO
-from stable_baselines3.common.env_util import make_vec_env
 from stable_baselines3.common.callbacks import (
     EvalCallback, CallbackList, BaseCallback
 )

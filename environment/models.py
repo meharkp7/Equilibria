@@ -1,6 +1,6 @@
 from __future__ import annotations
 from typing import Dict, List, Optional, Literal
-from pydantic import BaseModel, Field, field_validator
+from pydantic import BaseModel, Field, field_validator, model_validator
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -90,12 +90,11 @@ class Action(BaseModel):
     content_id: Optional[str] = None
     topic: Optional[str] = None
 
-    @field_validator("content_id")
-    @classmethod
-    def content_id_required_for_recommend(cls, v: Optional[str], info) -> Optional[str]:
-        if info.data.get("action_type") == "recommend" and v is None:
+    @model_validator(mode="after")
+    def validate_recommend_content(self):
+        if self.action_type == "recommend" and self.content_id is None:
             raise ValueError("content_id is required when action_type is 'recommend'")
-        return v
+        return self
 
 
 # ─────────────────────────────────────────────────────────────────────────────
