@@ -1,4 +1,5 @@
-const DEFAULT_BASE = import.meta.env.VITE_API_BASE_URL || '';
+import { resolveApiBase } from './config.js';
+
 const TIMEOUT_MS = 30_000;
 
 export class ApiError extends Error {
@@ -12,7 +13,8 @@ export class ApiError extends Error {
 }
 
 function getBaseUrl(baseUrl) {
-  return (baseUrl || DEFAULT_BASE || 'http://localhost:7860').replace(/\/$/, '');
+  const resolved = baseUrl != null && String(baseUrl).trim() !== '' ? baseUrl : resolveApiBase();
+  return String(resolved).replace(/\/$/, '');
 }
 
 async function parseError(response) {

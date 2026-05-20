@@ -11,13 +11,14 @@ import {
   stepPpo,
 } from './api.js';
 import { EpisodeGrade } from './EpisodeGrade.jsx';
+import { resolveApiBase } from './config.js';
 import {
   getOrCreateSessionId,
   setSessionId,
   usePersistedSettings,
 } from './usePersistedSettings.js';
 
-const DEFAULT_BASE = import.meta.env.VITE_API_BASE_URL || '';
+const DEFAULT_API_BASE = resolveApiBase();
 const TASKS = ['easy', 'medium', 'hard'];
 const ACTIONS = [
   { label: 'Recommend', type: 'recommend', icon: '◆' },
@@ -73,7 +74,7 @@ function policyHistoryLabel(payload) {
 
 function App() {
   const [settings, updateSettings] = usePersistedSettings({
-    apiBase: DEFAULT_BASE || 'http://localhost:7860',
+    apiBase: DEFAULT_API_BASE,
     task: 'easy',
   });
   const { apiBase, task } = settings;
@@ -356,7 +357,7 @@ function App() {
                   probeHealth();
                   loadPolicies();
                 }}
-                placeholder="http://localhost:7860 or /api"
+                placeholder={DEFAULT_API_BASE || 'https://your-space.hf.space'}
               />
             </label>
             <label>
@@ -375,6 +376,14 @@ function App() {
               </button>
               <button className="secondary" onClick={() => handleReset(true)} disabled={loading || autoRunning}>
                 New session
+              </button>
+              <button
+                className="secondary"
+                type="button"
+                onClick={() => updateSettings({ apiBase: resolveApiBase() })}
+                title="Point API at this host (HF Space or local)"
+              >
+                Use this host
               </button>
             </div>
             <p className="session-hint">Session {sessionId.slice(0, 8)}…</p>

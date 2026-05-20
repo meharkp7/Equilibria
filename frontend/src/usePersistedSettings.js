@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { normalizeStoredApiBase } from './config.js';
 
 const STORAGE_KEY = 'equilibria.settings';
 
@@ -6,7 +7,11 @@ export function loadSettings(defaults) {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) return defaults;
-    return { ...defaults, ...JSON.parse(raw) };
+    const parsed = { ...defaults, ...JSON.parse(raw) };
+    if (parsed.apiBase != null) {
+      parsed.apiBase = normalizeStoredApiBase(parsed.apiBase);
+    }
+    return parsed;
   } catch {
     return defaults;
   }
